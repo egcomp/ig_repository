@@ -93,7 +93,7 @@ public class Main {
             User receiver = dataBase.get(name);
             Letter letter = new Letter(user, receiver.user);
             if (letter.wrightLetter(scanner)) {
-                userObject.sendLetter(receiver, letter);
+                userObject.sendMail(receiver, letter);
                 System.out.printf("Letter from %s to %s is sent%n", user, receiver.user);
             } else
                 System.out.println("Something got wrong. Try later");

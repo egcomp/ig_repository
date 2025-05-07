@@ -13,6 +13,7 @@ public class User {
 
     private boolean hasWordSpam(Letter letter) {
         String allText = letter.header + " " + letter.text;
+        System.out.println("From hasWordSpam" + allText);
         return allText.toLowerCase().contains("spam");
     }
 
@@ -41,10 +42,11 @@ public class User {
         return Collections.max(wordsMap.values()) > numberRepetitions;
     }
 
-    private boolean isSpam(Letter letter) {
-        for (Map.Entry<String, String> entry : filters.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
+    private boolean isSpam(User receiver, Letter letter) {
+//        for (Map.Entry<String, String> entry : receiver.filters.entrySet()) {
+        for (String key : receiver.filters.keySet()) {
+//            String key = entry.getKey();
+            String value = receiver.filters.get(key);
             switch (key) {
                 case "simple":
                     if (value.contains("yes") &&
@@ -58,7 +60,7 @@ public class User {
                         return true;
                     break;
                 case "sender":
-                    if (letter.sender.equals(filters.get("sender")))
+                    if (letter.sender.equals(receiver.filters.get("sender")))
                         return true;
                 default:
                     return false;
@@ -67,19 +69,9 @@ public class User {
         return false;
     }
 
-//    private static List<String> getTokens1(String string) {
-//        String[] temp = string.split(" ");
-//        List<String> list = new ArrayList<>();
-//        for (String token: list)
-//            filters.put()
-//            list.add(token);
-//        return list;
-//    }
-
-
-    public void sendLetter(User receiver, Letter letter) {
+    public void sendMail(User receiver, Letter letter) {
         outbox.add(receiver.user + " " + letter.header);
-        if (isSpam(letter))
+        if (isSpam(receiver, letter))
             receiver.spam.add(user + " " + letter.header);
         else
             receiver.inbox.add(user + " " + letter.header);
