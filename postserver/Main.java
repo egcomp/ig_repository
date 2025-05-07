@@ -101,10 +101,8 @@ public class Main {
             System.out.printf("User %s is not found%n", name);
     }
 
-
     public static void main(String[] args) {
         init();
-
         int tt = 1; // Need to be removed
         while (true) {
             String command = getCommand();
