@@ -52,9 +52,11 @@ public class User {
                     if (value.contains("yes") &&
                             hasWordSpam(letter))
                         return true;
+                    break;
                 case "keywords":
                     if (hasKeyWords(letter, value))
                         return true;
+                    break;
                 case "repetition":
                     if (isRepetition(letter, Integer.parseInt(value)))
                         return true;
@@ -62,6 +64,7 @@ public class User {
                 case "sender":
                     if (letter.sender.equals(receiver.filters.get("sender")))
                         return true;
+                    break;
                 default:
                     return false;
             }
