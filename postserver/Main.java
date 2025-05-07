@@ -14,7 +14,7 @@ public class Main {
         scanner = new Scanner(System.in);
     }
 
-    public static List<String> getTokens(String string, boolean makeLowerCase) {
+    private static List<String> getTokens(String string, boolean makeLowerCase) {
         String[] temp = string.split("[^A-Za-z0-9]");
         List<String> list = new ArrayList<>();
         for (String token: temp)
@@ -67,7 +67,7 @@ public class Main {
         return tokens.getFirst();
     }
 
-    public static void printListOfUsers() {
+    private static void printListOfUsers() {
         if (users.isEmpty())
             System.out.println("No users");
         else {
@@ -101,9 +101,29 @@ public class Main {
             System.out.printf("User %s is not found%n", name);
     }
 
+    private static void printInbox() {
+        System.out.println("Inbox: ");
+        for (String mail : userObject.inbox) {
+            System.out.println(mail);
+        }
+    }
+
+    private static void printSpam() {
+        System.out.println("Spam: ");
+        for (String mail : userObject.spam) {
+            System.out.println(mail);
+        }
+    }
+
+    private static void printOutbox() {
+        System.out.println("Outbox: ");
+        for (String mail : userObject.outbox) {
+            System.out.println(mail);
+        }
+    }
+
     public static void main(String[] args) {
         init();
-        int tt = 1; // Need to be removed
         while (true) {
             String command = getCommand();
             if (command.equals("Error")) {
@@ -122,16 +142,16 @@ public class Main {
                         sendLetter();
                         break;
                     case "inbox":
-                        tt = 1;
+                        printInbox();
                         break;
                     case "spam":
-                        tt = 1;
+                        printSpam();
                         break;
                     case "outbox":
-                        tt = 1;
+                        printOutbox();
                         break;
                     case "setfilter":
-                        tt = 1;
+                        userObject.setFilter(scanner);
                         break;
                     case "user":
                         changeUser();
@@ -139,7 +159,7 @@ public class Main {
                     case "exit":
                         return;
                     default:
-                        tt = 1;
+                        System.out.println("Unknown command");
                         break;
                 }
         }

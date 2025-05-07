@@ -9,10 +9,6 @@ public class User {
 
     public User(String user) {
         this.user = user;
-        filters.put("simple", "");
-        filters.put("keywords", "");
-        filters.put("repetition", "");
-        filters.put("sender", "");
     }
 
     private boolean hasWordSpam(Letter letter) {
@@ -61,12 +57,25 @@ public class User {
                     if (isRepetition(letter, Integer.parseInt(value)))
                         return true;
                     break;
+                case "sender":
+                    if (letter.sender.equals(filters.get("sender")))
+                        return true;
                 default:
-                    break;
+                    return false;
             }
         }
         return false;
     }
+
+//    private static List<String> getTokens1(String string) {
+//        String[] temp = string.split(" ");
+//        List<String> list = new ArrayList<>();
+//        for (String token: list)
+//            filters.put()
+//            list.add(token);
+//        return list;
+//    }
+
 
     public void sendLetter(User receiver, Letter letter) {
         outbox.add(receiver.user + " " + letter.header);
@@ -75,4 +84,47 @@ public class User {
         else
             receiver.inbox.add(user + " " + letter.header);
     }
+
+    private boolean isNumber(String string) {
+        for (char c : string.toCharArray())
+            if (!Character.isDigit(c))
+                return false;
+        return true;
+    }
+
+    public void setFilter(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter filter name or empty line: ");
+            String filterName = scanner.nextLine().trim().toLowerCase();
+            switch (filterName) {
+                case "simple":
+                    filters.put(filterName, "yes");
+                    break;
+                case "keywords":
+                    System.out.print("Enter keywords through space: ");
+                    String keys = scanner.nextLine().trim().toLowerCase();
+                    filters.remove(filterName);
+                    filters.put(filterName, keys);
+                    break;
+                case "repetition":
+                    System.out.print("Enter maximum number of repetitions: ");
+                    String numberOfRepetitions = scanner.nextLine().trim().toLowerCase();
+                    if (!isNumber(numberOfRepetitions)) {
+                        System.out.println("Not a number");
+                        break;
+                    }
+                    filters.put(filterName, numberOfRepetitions);
+                    break;
+                case "sender":
+                    String userName = Main.getUser("Enter the sender name: ");
+                    if (!userName.isEmpty())
+                        filters.put(userName, "");
+                    break;
+                default:
+                    if (filterName.isEmpty())
+                        return;
+            }
+        }
+    }
 }
+
