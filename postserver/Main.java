@@ -25,19 +25,24 @@ public class Main {
         return list;
     }
 
-    public static String getCommand() {
+    private static String getCommand() {
         System.out.printf("Enter a command (%s): ", user);
         String line = scanner.nextLine().trim().toLowerCase();
+        if (user.isEmpty() && !line.equals("add")) {
+            System.out.println("First command must be 'add'! No one user is defined");
+            return "Error";
+        }
         int length = line.length();
         List<String> tokens = getTokens(line, true);
         if (tokens.isEmpty() || tokens.getFirst().length() != length || tokens.size() > 1
                              || !commands.contains(tokens.getFirst())) {
+            System.out.println("Wrong command");
             return "Error";
         }
         return tokens.getFirst();
     }
 
-    public static void setUserActive(String name, boolean printIfExist) {
+    private static void setUserActive(String name, boolean printIfExist) {
         if (!users.contains(name)) {
             users.add(name);
             Collections.sort(users);
@@ -77,7 +82,7 @@ public class Main {
         }
     }
 
-    public static void changeUser() {
+    private static void changeUser() {
         String name = getUser("Enter an existing user name: ");
         if (!users.contains(name))
             System.out.printf("User %s is not found%n", name);
@@ -85,8 +90,8 @@ public class Main {
             setUserActive(name, false);
     }
 
-    public static void sendLetter() {
-        String name = getUser("Enter the reseiver name: ");
+    private static void sendLetter() {
+        String name = getUser("Enter the receiver name: ");
         if (name.isEmpty())
             return;
         if (users.contains(name)) {
@@ -126,9 +131,7 @@ public class Main {
         init();
         while (true) {
             String command = getCommand();
-            if (command.equals("Error")) {
-                System.out.println("Wrong command");
-            } else
+            if (!command.equals("Error"))
                 switch (command) {
                     case "add":
                         String name = getUser("Enter a new user name: ");

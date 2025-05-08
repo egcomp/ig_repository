@@ -113,7 +113,7 @@ public class User {
                 case "sender":
                     String userName = Main.getUser("Enter the sender name: ");
                     if (!userName.isEmpty())
-                        filters.put(userName, "");
+                        filters.put(filterName, userName);
                     break;
                 default:
                     if (filterName.isEmpty())
